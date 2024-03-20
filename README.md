@@ -1,5 +1,4 @@
 
-  - [*To the reader*](#to-the-reader)
   - [Part 0. Proposal](#part-0-proposal)
   - [Part I. Work out functionality ✅](#part-i-work-out-functionality-)
       - [Try it out](#try-it-out)
@@ -20,50 +19,42 @@
       - [`devtools::check()` report](#devtoolscheck-report)
       - [Package directory file tree](#package-directory-file-tree)
 
-# *To the reader*
+<!-- badges: start -->
 
-Welcome to the R package building helper *readme2pkg.template*\!
-
-Below, is a readme that provides steps for building a package. This
-readme acts as a worksheet, checklist, and control document as functions
-used in package building are included within.
-
-We’ll use the `{readme2pkg}` helper package to send code chunks to
-different directories in the package.
-
-To install `{readme2pkg}`:
-
-``` 
-
-remotes::install.github("EvaMaeRey/readme2pkg")
-```
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+<!-- badges: end -->
 
 # Part 0. Proposal
 
-Proposing the {xxxx} package\! 🦄
+Proposing the {greenhistogram} package\! 🦄
 <!-- (typical package introduction write up; but actually aspirational) -->
 
-The goal of {xxxx} is to make … easier.
+The goal of {greenhistogram} is to make … easier.
 
 Without the package, we live in the effort-ful world that follows 🏋:
 
 ``` r
-x <- 4
+library(ggplot2)
 
-2*x
-#> [1] 8
+ggplot(cars, aes(dist)) + 
+  geom_histogram(fill = "green")
+#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-With the {xxxx} package, we’ll live in a different world (🦄 🦄 🦄) where
-the task is a snap 🫰:
+![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+With the {greenhistogram} package, we’ll live in a different world (🦄 🦄
+🦄) where the task is a snap 🫰:
 
 Proposed API:
 
 ``` 
 
-library(xxxxx)
+library(greenhistogram)
 
-xxxxx::times_two(x = 4)
+ggplot(cars, aes(dist)) + 
+  geom_histogram_green()
 ```
 
 # Part I. Work out functionality ✅
@@ -71,9 +62,9 @@ xxxxx::times_two(x = 4)
 Here is a function that will do some work…
 
 ``` r
-times_two <- function(x){
+geom_histogram_green <- function(...){
   
-  x*2
+  ggplot2::geom_histogram(fill = "green", ...)
   
 }
 ```
@@ -81,9 +72,12 @@ times_two <- function(x){
 ## Try it out
 
 ``` r
-times_two(4)
-#> [1] 8
+ggplot(cars, aes(dist)) + 
+  geom_histogram_green()
+#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
+
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 # Part II. Packaging and documentation 🚧 ✅
 
@@ -118,7 +112,7 @@ usethis::use_package("ggplot2")
 Use new {readme2pkg} function to do this from readme…
 
 ``` r
-readme2pkg::chunk_to_r(chunk_name = "times_two")
+readme2pkg::chunk_to_r(chunk_name = "geom_histogram_green")
 ```
 
 ### Bit D. Run [`devtools::check()`](https://r-pkgs.org/whole-game.html#check) and address errors. 🚧 ✅
@@ -132,24 +126,26 @@ devtools check will document the functions for you.
 ### Bit E. [Install](https://r-pkgs.org/whole-game.html#install) and restart package 🚧 ✅
 
 ``` r
-devtools::install(pkg = ".")
+devtools::install(pkg = ".", upgrade = 'never')
 ```
 
 ### Bit F. Write traditional README that uses built package (also serves as a test of build). 🚧 ✅
 
-The goal of the {xxxx} package is to …
+The goal of the {greenhistogram} package is to …
 
 Install package with:
 
-    remotes::installgithub("GithubCoolUser/mypacakge")
+    remotes::install_github("EvaMaeRey/greenhistogram")
 
 Once functions are exported you can remove go to two colons, and when
 things are are really finalized, then go without colons (and rearrange
 your readme…)
 
 ``` r
-library(mypackage)  ##<< change to your package name here
-mypackage:::times_two(10)
+library(greenhistogram)  ##<< change to your package name here
+
+ggplot(cars, aes(dist)) + 
+  greenhistogram:::geom_histogram_green()
 ```
 
 ### Bit G. Add [lifecycle badge](https://r-pkgs.org/lifecycle.html) (experimental) 🚧 ✅
@@ -158,9 +154,9 @@ mypackage:::times_two(10)
 usethis::use_lifecycle_badge("experimental")
 ```
 
-### Bit H. Compile README.Rmd
+### Bit H. Compile README.Rmd 🚧 ✅
 
-### Bit I. Push to github.
+### Bit I. Push to github. 🚧 ✅
 
 RStudio: Console/Terminal/RMarkdown/Jobs:
 
@@ -241,9 +237,9 @@ all[11:17]
 #> [2] "attached base packages:"                                                  
 #> [3] "[1] stats     graphics  grDevices utils     datasets  methods   base     "
 #> [4] ""                                                                         
-#> [5] "loaded via a namespace (and not attached):"                               
-#> [6] " [1] compiler_4.2.2  fastmap_1.1.1   cli_3.6.1       tools_4.2.2    "     
-#> [7] " [5] htmltools_0.5.4 rstudioapi_0.14 yaml_2.3.7      rmarkdown_2.20 "
+#> [5] "other attached packages:"                                                 
+#> [6] "[1] ggplot2_3.4.4.9000"                                                   
+#> [7] ""
 ```
 
 ## `devtools::check()` report
@@ -257,7 +253,16 @@ devtools::check(pkg = ".")
 ``` r
 fs::dir_tree(recurse = T)
 #> .
+#> ├── DESCRIPTION
+#> ├── NAMESPACE
+#> ├── R
+#> │   └── geom_histogram_green.R
 #> ├── README.Rmd
 #> ├── README.md
-#> └── readme2pkg.template.Rproj
+#> ├── README_files
+#> │   └── figure-gfm
+#> │       ├── unnamed-chunk-2-1.png
+#> │       └── unnamed-chunk-3-1.png
+#> ├── greenhistogram.Rproj
+#> └── man
 ```

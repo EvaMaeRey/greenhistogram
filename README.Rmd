@@ -14,49 +14,38 @@ knitr::opts_chunk$set(
 )
 ```
 
-# *To the reader* 
-
-Welcome to the R package building helper *readme2pkg.template*!
-
-Below, is a readme that provides steps for building a package.  This readme acts as a worksheet, checklist, and control document as functions used in package building are included within.  
-
-We'll use the `{readme2pkg}` helper package to send code chunks to different directories in the package.  
-
-To install `{readme2pkg}`:
-
-```
-
-remotes::install.github("EvaMaeRey/readme2pkg")
-
-```
+<!-- badges: start -->
+  [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+  <!-- badges: end -->  
 
 # Part 0. Proposal
 
-Proposing the {xxxx} package! 🦄 
+Proposing the {greenhistogram} package! 🦄 
 <!-- (typical package introduction write up; but actually aspirational) -->
 
-The goal of {xxxx} is to make ... easier.
+The goal of {greenhistogram} is to make ... easier.
 
 
 Without the package, we live in the effort-ful world that follows 🏋:
 
 ```{r}
-x <- 4
+library(ggplot2)
 
-2*x
-
+ggplot(cars, aes(dist)) + 
+  geom_histogram(fill = "green")
 ```
 
   
-With the {xxxx} package, we'll live in a different world (🦄 🦄 🦄) where the task is a snap 🫰: 
+With the {greenhistogram} package, we'll live in a different world (🦄 🦄 🦄) where the task is a snap 🫰: 
 
 Proposed API:
 
 ```
 
-library(xxxxx)
+library(greenhistogram)
 
-xxxxx::times_two(x = 4)
+ggplot(cars, aes(dist)) + 
+  geom_histogram_green()
 
 ```
 
@@ -67,10 +56,10 @@ xxxxx::times_two(x = 4)
 Here is a function that will do some work...
 
 
-```{r times_two}
-times_two <- function(x){
+```{r geom_histogram_green}
+geom_histogram_green <- function(...){
   
-  x*2
+  ggplot2::geom_histogram(fill = "green", ...)
   
 }
 ```
@@ -79,7 +68,8 @@ times_two <- function(x){
 ## Try it out
 
 ```{r}
-times_two(4)
+ggplot(cars, aes(dist)) + 
+  geom_histogram_green()
 ```
 
 
@@ -115,7 +105,7 @@ usethis::use_package("ggplot2")
 Use new {readme2pkg} function to do this from readme...
 
 ```{r, eval = F}
-readme2pkg::chunk_to_r(chunk_name = "times_two")
+readme2pkg::chunk_to_r(chunk_name = "geom_histogram_green")
 ```
 
 
@@ -131,25 +121,27 @@ devtools check will document the functions for you.
 ### Bit E. [Install](https://r-pkgs.org/whole-game.html#install) and restart package 🚧 ✅
 
 ```{r, eval = F}
-devtools::install(pkg = ".")
+devtools::install(pkg = ".", upgrade = 'never')
 ```
 
 
 ### Bit F. Write traditional README that uses built package (also serves as a test of build). 🚧 ✅ 
 
-The goal of the {xxxx} package is to ...
+The goal of the {greenhistogram} package is to ...
 
 Install package with:
 
 ```
-remotes::installgithub("GithubCoolUser/mypacakge")
+remotes::install_github("EvaMaeRey/greenhistogram")
 ```
 
 Once functions are exported you can remove go to two colons, and when things are are really finalized, then go without colons (and rearrange your readme...)
 
 ```{r, eval = F}
-library(mypackage)  ##<< change to your package name here
-mypackage:::times_two(10)
+library(greenhistogram)  ##<< change to your package name here
+
+ggplot(cars, aes(dist)) + 
+  greenhistogram:::geom_histogram_green()
 ```
 
 

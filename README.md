@@ -142,6 +142,7 @@ things are are really finalized, then go without colons (and rearrange
 your readme…)
 
 ``` r
+library(ggplot2)
 library(greenhistogram)  ##<< change to your package name here
 
 ggplot(cars, aes(dist)) + 
